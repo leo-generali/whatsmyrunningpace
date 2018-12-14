@@ -8,6 +8,7 @@ import {
   secondsToHoursString
 } from '../../helpers/time';
 import { round } from '../../helpers/math';
+import { MILE } from '../../helpers/constants';
 
 class RunningCalculator extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class RunningCalculator extends Component {
     this.handlePaceInput = this.handlePaceInput.bind(this);
     this.setPace = this.setPace.bind(this);
     this.setDistance = this.setDistance.bind(this);
+    this.setDistanceWithDropdown = this.setDistanceWithDropdown.bind(this);
     this.setTime = this.setTime.bind(this);
   }
 
@@ -32,7 +34,7 @@ class RunningCalculator extends Component {
 
   handleDistanceInput(e) {
     const inputDistance = parseFloat(e.target.value);
-    const distance = inputDistance * 1609.34;
+    const distance = inputDistance * MILE;
     this.setState({ inputDistance, distance });
   }
 
@@ -53,21 +55,27 @@ class RunningCalculator extends Component {
 
   setPace() {
     const { distance, time } = this.state;
-    const pace = time / (distance / 1609.34);
+    const pace = time / (distance / MILE);
     const inputPace = secondsToMinutesString(pace);
     this.setState({ pace, inputPace });
   }
 
   setDistance() {
     const { time, pace } = this.state;
-    const distance = round(time / pace) * 1609.34;
-    const inputDistance = distance / 1609.34;
+    const distance = round(time / pace) * MILE;
+    const inputDistance = distance / MILE;
+    this.setState({ distance, inputDistance });
+  }
+
+  setDistanceWithDropdown(e) {
+    const distance = e.value;
+    const inputDistance = distance / MILE;
     this.setState({ distance, inputDistance });
   }
 
   setTime() {
     const { pace, distance } = this.state;
-    const time = pace * (distance / 1609.34);
+    const time = pace * (distance / MILE);
     const inputTime = secondsToHoursString(time);
     this.setState({ time, inputTime });
   }
@@ -81,6 +89,7 @@ class RunningCalculator extends Component {
         handlePaceInput={this.handlePaceInput}
         setPace={this.setPace}
         setDistance={this.setDistance}
+        setDistanceWithDropdown={this.setDistanceWithDropdown}
         setTime={this.setTime}
       />
     );
