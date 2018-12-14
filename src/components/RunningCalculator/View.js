@@ -10,18 +10,13 @@ const View = (props) => {
     <div>
       Pace: {props.inputPace} Pace in Seconds: {props.pace}
       <InputPace {...props} />
-      <button name="unitPace" onClick={props.changeMultiplierPace}>
-        change unit pace
-      </button>
       <br />
       {distanceToString(props.unitPace)}
       <br />
       <br />
       Distance: {props.inputDistance} Distance in Meters: {props.distance}
       <InputDistance {...props} />
-      <button name="unitDistance" onClick={props.changeMultiplierDistance}>
-        change unit
-      </button>
+      <button onClick={props.changeDistanceUnit}>change unit</button>
       <br />
       {distanceToString(props.unitDistance)}
       <br />
