@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Dropdown from 'react-dropdown';
 import { DISTANCE_OPTIONS } from '../../helpers/constants';
 
 class InputDistance extends Component {
@@ -13,10 +12,11 @@ class InputDistance extends Component {
           type="number"
           step="0.01"
         />
-        <Dropdown
-          options={DISTANCE_OPTIONS}
-          onChange={this.props.setDistanceWithDropdown}
-        />
+        <select onChange={this.props.setDistanceWithDropdown}>
+          {DISTANCE_OPTIONS.map((option) => (
+            <option value={option.value}>{option.label}</option>
+          ))}
+        </select>
       </div>
     );
   }

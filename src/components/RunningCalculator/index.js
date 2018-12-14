@@ -62,14 +62,14 @@ class RunningCalculator extends Component {
 
   setDistance() {
     const { time, pace } = this.state;
-    const distance = round(time / pace) * MILE;
-    const inputDistance = distance / MILE;
+    const distance = (time / pace) * MILE;
+    const inputDistance = round(distance / MILE);
     this.setState({ distance, inputDistance });
   }
 
   setDistanceWithDropdown(e) {
-    const distance = e.value;
-    const inputDistance = distance / MILE;
+    const distance = e.target.value;
+    const inputDistance = round(distance / MILE);
     this.setState({ distance, inputDistance });
   }
 
