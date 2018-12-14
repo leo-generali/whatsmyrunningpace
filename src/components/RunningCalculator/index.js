@@ -8,7 +8,7 @@ import {
   secondsToHoursString
 } from '../../helpers/time';
 import { round } from '../../helpers/math';
-import { METER, KILOMETER, MILE, UNIT_OPTIONS } from '../../helpers/constants';
+import { MILE, UNIT_OPTIONS } from '../../helpers/constants';
 
 class RunningCalculator extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ class RunningCalculator extends Component {
     this.handleTimeInput = this.handleTimeInput.bind(this);
     this.handlePaceInput = this.handlePaceInput.bind(this);
     this.setPace = this.setPace.bind(this);
+    this.changePaceUnit = this.changePaceUnit.bind(this);
     this.setDistance = this.setDistance.bind(this);
     this.setDistanceWithDropdown = this.setDistanceWithDropdown.bind(this);
     this.changeDistanceUnit = this.changeDistanceUnit.bind(this);
@@ -61,14 +62,30 @@ class RunningCalculator extends Component {
 
   setPace() {
     const { distance, time } = this.state;
-    const pace = time / (distance / this.state.unitDistance);
+
+    const pace = time / (distance / this.state.unitPace);
     const inputPace = secondsToMinutesString(pace);
+
     this.setState({ pace, inputPace });
+  }
+
+  changePaceUnit() {
+    const { distance, time } = this.state;
+    const len = UNIT_OPTIONS.length - 1;
+    const index = UNIT_OPTIONS.indexOf(this.state.unitPace);
+
+    const newIndex = index >= len ? 0 : index + 1;
+    const unitPace = UNIT_OPTIONS[newIndex];
+
+    const pace = time / (distance / unitPace);
+    const inputPace = secondsToMinutesString(pace);
+
+    this.setState({ unitPace, pace, inputPace });
   }
 
   setDistance() {
     const { time, pace } = this.state;
-    const distance = (time / pace) * this.state.unitDistance;
+    const distance = (time / pace) * this.state.unitPace;
     const inputDistance = round(distance / this.state.unitDistance);
     this.setState({ distance, inputDistance });
   }
@@ -88,7 +105,11 @@ class RunningCalculator extends Component {
     const unitDistance = UNIT_OPTIONS[newIndex];
     const distance = unitDistance * inputDistance;
 
-    this.setState({ unitDistance: UNIT_OPTIONS[newIndex], distance });
+    this.setState({
+      unitDistance,
+      distance,
+      inputDistance: round(distance / unitDistance)
+    });
   }
 
   setTime() {
@@ -107,7 +128,6 @@ class RunningCalculator extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <View
         {...this.state}
@@ -119,6 +139,7 @@ class RunningCalculator extends Component {
         setDistanceWithDropdown={this.setDistanceWithDropdown}
         setTime={this.setTime}
         changeDistanceUnit={this.changeDistanceUnit}
+        changePaceUnit={this.changePaceUnit}
       />
     );
   }
