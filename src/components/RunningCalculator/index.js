@@ -8,7 +8,7 @@ import {
   secondsToHoursString
 } from '../../helpers/time';
 import { round } from '../../helpers/math';
-import { MILE } from '../../helpers/constants';
+import { METER, KILOMETER, MILE, UNIT_OPTIONS } from '../../helpers/constants';
 
 class RunningCalculator extends Component {
   constructor(props) {
@@ -21,20 +21,24 @@ class RunningCalculator extends Component {
     this.setDistance = this.setDistance.bind(this);
     this.setDistanceWithDropdown = this.setDistanceWithDropdown.bind(this);
     this.setTime = this.setTime.bind(this);
+    this.changeMultiplierDistance = this.changeMultiplierDistance.bind(this);
+    this.changeMultiplierPace = this.changeMultiplierPace.bind(this);
   }
 
   state = {
     distance: 12874.72,
-    pace: 450,
-    time: 3600,
     inputDistance: 8,
+    unitDistance: MILE,
+    pace: 450,
     inputPace: '07:30',
+    unitPace: MILE,
+    time: 3600,
     inputTime: '01:00:00'
   };
 
   handleDistanceInput(e) {
     const inputDistance = parseFloat(e.target.value);
-    const distance = inputDistance * MILE;
+    const distance = inputDistance * this.state.unitDistance;
     this.setState({ inputDistance, distance });
   }
 
@@ -55,27 +59,57 @@ class RunningCalculator extends Component {
 
   setPace() {
     const { distance, time } = this.state;
-    const pace = time / (distance / MILE);
+    const pace = time / (distance / this.state.unitDistance);
     const inputPace = secondsToMinutesString(pace);
     this.setState({ pace, inputPace });
   }
 
+  changeMultiplierPace() {
+    const { distance, time } = this.state;
+    const len = UNIT_OPTIONS.length;
+    const index = UNIT_OPTIONS.indexOf(this.state.unitPace);
+    const newIndex = index < len - 1 ? index + 1 : 0;
+    const unitPace = UNIT_OPTIONS[newIndex];
+    const pace = time / (distance / unitPace);
+    const inputPace = secondsToMinutesString(pace);
+
+    this.setState({
+      inputPace,
+      unitPace,
+      pace
+    });
+  }
+
   setDistance() {
     const { time, pace } = this.state;
-    const distance = (time / pace) * MILE;
-    const inputDistance = round(distance / MILE);
+    const distance = (time / pace) * this.state.unitDistance;
+    const inputDistance = round(distance / this.state.unitDistance);
     this.setState({ distance, inputDistance });
   }
 
   setDistanceWithDropdown(e) {
     const distance = e.target.value;
-    const inputDistance = round(distance / MILE);
+    const inputDistance = round(distance / this.state.unitDistance);
     this.setState({ distance, inputDistance });
+  }
+
+  changeMultiplierDistance() {
+    const { time, pace } = this.state;
+    const len = UNIT_OPTIONS.length;
+    const index = UNIT_OPTIONS.indexOf(this.state.unitDistance);
+    const newIndex = index < len - 1 ? index + 1 : 0;
+    const unitDistance = UNIT_OPTIONS[newIndex];
+    const distance = (time / pace) * unitDistance;
+
+    this.setState({
+      unitDistance,
+      distance
+    });
   }
 
   setTime() {
     const { pace, distance } = this.state;
-    const time = pace * (distance / MILE);
+    const time = pace * (distance / this.state.unitPace);
     const inputTime = secondsToHoursString(time);
     this.setState({ time, inputTime });
   }
@@ -91,6 +125,8 @@ class RunningCalculator extends Component {
         setDistance={this.setDistance}
         setDistanceWithDropdown={this.setDistanceWithDropdown}
         setTime={this.setTime}
+        changeMultiplierDistance={this.changeMultiplierDistance}
+        changeMultiplierPace={this.changeMultiplierPace}
       />
     );
   }

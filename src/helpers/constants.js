@@ -15,6 +15,8 @@ const TWENTYK = 20 * KILOMETER;
 const HALFMARATHON = 21.0975 * KILOMETER;
 const MARATHON = 42.195 * KILOMETER;
 
+export const UNIT_OPTIONS = [METER, KILOMETER, MILE];
+
 export const DISTANCE_OPTIONS = [
   { label: '400m', value: QUARTERMILE },
   { label: '800m', value: HALFMILE },

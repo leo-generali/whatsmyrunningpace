@@ -13,8 +13,10 @@ class InputDistance extends Component {
           step="0.01"
         />
         <select onChange={this.props.setDistanceWithDropdown}>
-          {DISTANCE_OPTIONS.map((option) => (
-            <option value={option.value}>{option.label}</option>
+          {DISTANCE_OPTIONS.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
           ))}
         </select>
       </div>
