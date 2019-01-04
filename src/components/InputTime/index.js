@@ -5,7 +5,9 @@ class InputTime extends Component {
   render() {
     return (
       <div>
+        <label for="time">Time:</label>
         <TimeField
+          name="time"
           value={this.props.inputTime}
           onChange={this.props.handleTimeInput}
           showSeconds={true}

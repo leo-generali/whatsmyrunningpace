@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { DISTANCE_OPTIONS } from '../../helpers/constants';
+import { distanceToString } from '../../helpers/display';
 
 class InputDistance extends Component {
   render() {
     return (
       <div>
+        <label for="distance">Distance</label>
         <input
           value={this.props.inputDistance}
           onChange={this.props.handleDistanceInput}
@@ -19,6 +21,8 @@ class InputDistance extends Component {
             </option>
           ))}
         </select>
+        <button onClick={this.props.changeDistanceUnit}>Change Unit</button>
+        {distanceToString(this.props.unitDistance)}
       </div>
     );
   }

@@ -1,13 +1,15 @@
 import React from 'react';
-import './reset.css';
 
 import Layout from '../components/Layout';
-import SEO from '../components/SEO';
+
 import RunningCalculator from '../components/RunningCalculator';
+
+// Extra
+import '../styles/fonts.css';
+import '../styles/reset.css';
 
 const IndexPage = () => (
   <Layout>
-    <SEO />
     <RunningCalculator />
   </Layout>
 );
